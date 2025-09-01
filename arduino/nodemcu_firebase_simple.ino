@@ -1,68 +1,71 @@
-/*
- * Simple NodeMCU Firebase Switch Reader
- * Basic version for beginners
- * 
- * This code reads switch state from Firebase and controls an LED
- * Firebase URL: https://smart-multi-meter-default-rtdb.firebaseio.com/switch-1
- */
-
 #include <ESP8266WiFi.h>
-#include <FirebaseESP8266.h>
+#include <Firebase_ESP_Client.h>
+#include "addons/TokenHelper.h"
+#include "addons/RTDBHelper.h"
 
-// WiFi settings - CHANGE THESE!
-const char* ssid = "YOUR_WIFI_NAME";
-const char* password = "YOUR_WIFI_PASSWORD";
+// WiFi Credentials
+char ssid[] = "Xiomi";
+char pass[] = "dddddddd";
 
-// Firebase settings
-#define FIREBASE_HOST "smart-multi-meter-default-rtdb.firebaseio.com"
+// Firebase Credentials
+#define API_KEY "AIzaSyD6KZW922Gkdios-p6M-tX3ajxLUhhi_dM"
+#define DATABASE_URL "https://smart-multi-meter-default-rtdb.firebaseio.com/"
 
-// Pin for LED
-#define LED_PIN D4  // Built-in LED on NodeMCU
+FirebaseData fbdo;
+FirebaseAuth auth;
+FirebaseConfig config;
+bool signupOK = false;
 
-// Firebase object
-FirebaseData firebaseData;
-
-void setup() {
+void setup()
+{
   Serial.begin(115200);
-  Serial.println("Starting NodeMCU Firebase Switch Reader...");
-  
-  // Setup LED pin
-  pinMode(LED_PIN, OUTPUT);
-  digitalWrite(LED_PIN, LOW);
-  
-  // Connect to WiFi
-  WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
+  WiFi.begin(ssid, pass);
+  Serial.print("Connecting to WiFi");
+  while (WiFi.status() != WL_CONNECTED)
+  {
     Serial.print(".");
+    delay(300);
   }
-  Serial.println();
-  Serial.println("WiFi connected!");
-  Serial.print("IP: ");
-  Serial.println(WiFi.localIP());
-  
-  // Initialize Firebase
-  Firebase.begin(FIREBASE_HOST);
-  Serial.println("Firebase connected!");
-  Serial.println("Reading switch state every 2 seconds...");
+  Serial.println("\nWiFi connected.");
+
+  config.api_key = API_KEY;
+  config.database_url = DATABASE_URL;
+  config.token_status_callback = tokenStatusCallback;
+
+  // Anonymous sign-up
+  if (Firebase.signUp(&config, &auth, "", ""))
+  {
+    Serial.println("Firebase signed up (anonymous)");
+    signupOK = true;
+  }
+  else
+  {
+    Serial.printf("Sign-up failed: %s\n", config.signer.signupError.message.c_str());
+  }
+
+  Firebase.begin(&config, &auth);
+  Firebase.reconnectWiFi(true);
 }
 
-void loop() {
-  // Read switch state from Firebase
-  if (Firebase.getBool(firebaseData, "/switch-1")) {
-    bool switchState = firebaseData.boolData();
-    
-    // Control LED based on switch state
-    if (switchState) {
-      digitalWrite(LED_PIN, HIGH);  // Turn ON LED
-      Serial.println("Switch: ON  -> LED: ON");
-    } else {
-      digitalWrite(LED_PIN, LOW);   // Turn OFF LED
-      Serial.println("Switch: OFF -> LED: OFF");
+void loop()
+{
+  if (signupOK && Firebase.ready())
+  {
+    // Read root ("/") JSON data from Firebase RTDB
+    if (Firebase.RTDB.getJSON(&fbdo, "/switch-1"))
+    {
+      String jsonData = fbdo.jsonString();
+      Serial.println("Firebase JSON Data:");
+      Serial.println(jsonData);
     }
-  } else {
-    Serial.println("Error reading Firebase: " + firebaseData.errorReason());
+    else
+    {
+      Serial.printf("Failed to get data: %s\n", fbdo.errorReason().c_str());
+    }
   }
-  
-  delay(2000); // Wait 2 seconds before next check
+  else
+  {
+    Serial.println("Firebase not ready or signup failed.");
+  }
+  delay(5000);
 }

@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Power Pack - Web Application</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Custom CSS -->
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 100px 0;
+        }
+        .feature-card {
+            transition: transform 0.3s ease;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        .btn-custom {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+        .btn-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+        .stats-section {
+            background-color: #f8f9fa;
+            padding: 80px 0;
+        }
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+        }
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 50px 0 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="bi bi-lightning-charge-fill text-primary"></i>
+                Smart Power Pack
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#firebase-data">Data</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold mb-4">Smart Power Pack</h1>
+                    <p class="lead mb-4">Revolutionary power management solution for the modern world. Efficient, reliable, and intelligent energy distribution.</p>
+                    <div class="d-flex gap-3">
+                        <button class="btn btn-custom btn-lg">
+                            <i class="bi bi-play-circle me-2"></i>Get Started
+                        </button>
+                        <button class="btn btn-outline-light btn-lg">
+                            <i class="bi bi-info-circle me-2"></i>Learn More
+                        </button>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="text-center">
+                        <i class="bi bi-lightning-charge display-1 opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center mb-5">
+                    <h2 class="display-5 fw-bold">Powerful Features</h2>
+                    <p class="lead text-muted">Discover what makes our Smart Power Pack the ultimate energy solution</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card feature-card h-100">
+                        <div class="card-body text-center p-4">
+                            <i class="bi bi-cpu text-primary display-4 mb-3"></i>
+                            <h5 class="card-title">Smart Monitoring</h5>
+                            <p class="card-text">Real-time power consumption tracking with intelligent analytics and predictive maintenance.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card feature-card h-100">
+                        <div class="card-body text-center p-4">
+                            <i class="bi bi-shield-check text-success display-4 mb-3"></i>
+                            <h5 class="card-title">Safety First</h5>
+                            <p class="card-text">Advanced protection systems with automatic circuit breakers and surge protection.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card feature-card h-100">
+                        <div class="card-body text-center p-4">
+                            <i class="bi bi-phone text-info display-4 mb-3"></i>
+                            <h5 class="card-title">Mobile Control</h5>
+                            <p class="card-text">Control and monitor your power system from anywhere with our intuitive mobile app.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="stat-item">
+                        <div class="stat-number">10K+</div>
+                        <div class="text-muted">Happy Customers</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-item">
+                        <div class="stat-number">99.9%</div>
+                        <div class="text-muted">Uptime</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-item">
+                        <div class="stat-number">50+</div>
+                        <div class="text-muted">Countries</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-item">
+                        <div class="stat-number">24/7</div>
+                        <div class="text-muted">Support</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h2 class="display-5 fw-bold mb-4">About Smart Power Pack</h2>
+                    <p class="lead mb-4">We're revolutionizing the way people think about power management. Our cutting-edge technology combines efficiency, reliability, and intelligence to deliver the ultimate energy solution.</p>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Energy efficient design</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>IoT connectivity</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Cloud-based analytics</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Scalable architecture</li>
+                    </ul>
+                </div>
+                <div class="col-lg-6">
+                    <div class="bg-light p-5 rounded">
+                        <h4>Quick Demo</h4>
+                        <p>Experience the power of our system with this interactive demo.</p>
+                        <div class="progress mb-3">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 75%"></div>
+                        </div>
+                        <small class="text-muted">Power Efficiency: 75%</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Firebase Data Section -->
+    <section id="firebase-data" class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center mb-5">
+                    <h2 class="display-5 fw-bold">Real-Time Data</h2>
+                    <p class="lead text-muted">Live data from your Smart Multi-Meter system</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">
+                                <i class="bi bi-database me-2"></i>
+                                Firebase Realtime Database
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <button id="refreshBtn" class="btn btn-outline-primary">
+                                        <i class="bi bi-arrow-clockwise me-2"></i>Refresh Data
+                                    </button>
+                                    <button id="clearBtn" class="btn btn-outline-secondary ms-2">
+                                        <i class="bi bi-trash me-2"></i>Clear Display
+                                    </button>
+                                </div>
+                                <div class="col-md-6 text-md-end">
+                                    <span class="badge bg-success" id="connectionStatus">
+                                        <i class="bi bi-wifi me-1"></i>Connected
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <!-- Data Display Area -->
+                            <div id="dataDisplay" class="border rounded p-3 bg-light">
+                                <div class="text-center text-muted">
+                                    <i class="bi bi-database display-4"></i>
+                                    <p class="mt-2">Click "Refresh Data" to load data from Firebase</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Data Structure Info -->
+                            <div class="mt-4">
+                                <h6>Database Structure:</h6>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <ul class="list-unstyled">
+                                            <li><i class="bi bi-arrow-right text-primary me-2"></i>Meter readings</li>
+                                            <li><i class="bi bi-arrow-right text-primary me-2"></i>Power consumption</li>
+                                            <li><i class="bi bi-arrow-right text-primary me-2"></i>Voltage levels</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <ul class="list-unstyled">
+                                            <li><i class="bi bi-arrow-right text-primary me-2"></i>Current readings</li>
+                                            <li><i class="bi bi-arrow-right text-primary me-2"></i>Energy usage</li>
+                                            <li><i class="bi bi-arrow-right text-primary me-2"></i>System status</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center mb-5">
+                    <h2 class="display-5 fw-bold">Get In Touch</h2>
+                    <p class="lead text-muted">Ready to revolutionize your power management? Contact us today!</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <form>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="firstName" class="form-label">First Name</label>
+                                <input type="text" class="form-control" id="firstName" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="lastName" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="lastName" required>
+                            </div>
+                            <div class="col-12">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                            <div class="col-12">
+                                <label for="message" class="form-label">Message</label>
+                                <textarea class="form-control" id="message" rows="4" required></textarea>
+                            </div>
+                            <div class="col-12 text-center">
+                                <button type="submit" class="btn btn-custom btn-lg">
+                                    <i class="bi bi-send me-2"></i>Send Message
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5><i class="bi bi-lightning-charge-fill me-2"></i>Smart Power Pack</h5>
+                    <p class="text-muted">Revolutionizing power management with intelligent solutions for the modern world.</p>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="text-light"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="text-light"><i class="bi bi-twitter"></i></a>
+                        <a href="#" class="text-light"><i class="bi bi-linkedin"></i></a>
+                        <a href="#" class="text-light"><i class="bi bi-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6>Product</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-muted text-decoration-none">Features</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Pricing</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Documentation</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">API</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6>Company</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-muted text-decoration-none">About</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Careers</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Press</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6>Support</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-muted text-decoration-none">Help Center</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Contact</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Status</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Community</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6>Legal</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-muted text-decoration-none">Privacy</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Terms</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Security</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Cookies</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="text-muted mb-0">&copy; 2024 Smart Power Pack. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="text-muted mb-0">Made with <i class="bi bi-heart-fill text-danger"></i> for a better future</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyD6KZW922Gkdios-p6M-tX3ajxLUhhi_dM",
+            authDomain: "smart-multi-meter.firebaseapp.com",
+            databaseURL: "https://smart-multi-meter-default-rtdb.firebaseio.com",
+            projectId: "smart-multi-meter",
+            storageBucket: "smart-multi-meter.firebasestorage.app",
+            messagingSenderId: "178320484508",
+            appId: "1:178320484508:web:da995c7b4ab493ffe0e559"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add navbar background on scroll
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+                navbar.style.backdropFilter = 'blur(10px)';
+            } else {
+                navbar.style.backgroundColor = 'white';
+                navbar.style.backdropFilter = 'none';
+            }
+        });
+
+        // Form submission handler
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your message! We\'ll get back to you soon.');
+            this.reset();
+        });
+
+        // Animate progress bar on scroll
+        const observerOptions = {
+            threshold: 0.5,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const progressBar = entry.target.querySelector('.progress-bar');
+                    progressBar.style.width = '75%';
+                }
+            });
+        }, observerOptions);
+
+        const progressSection = document.querySelector('.bg-light.p-5.rounded');
+        if (progressSection) {
+            observer.observe(progressSection);
+        }
+
+        // Firebase Data Functions
+        function displayFirebaseData(data) {
+            const dataDisplay = document.getElementById('dataDisplay');
+            
+            if (!data || Object.keys(data).length === 0) {
+                dataDisplay.innerHTML = `
+                    <div class="text-center text-muted">
+                        <i class="bi bi-exclamation-triangle display-4"></i>
+                        <p class="mt-2">No data available in the database</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '<div class="row">';
+            
+            // Display data in a structured format
+            Object.keys(data).forEach(key => {
+                const value = data[key];
+                html += `
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="card border-primary">
+                            <div class="card-header bg-primary text-white">
+                                <h6 class="mb-0"><i class="bi bi-tag me-2"></i>${key}</h6>
+                            </div>
+                            <div class="card-body">
+                                ${formatDataValue(value)}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            dataDisplay.innerHTML = html;
+        }
+
+        function formatDataValue(value) {
+            if (typeof value === 'object' && value !== null) {
+                let html = '<ul class="list-unstyled mb-0">';
+                Object.keys(value).forEach(subKey => {
+                    const subValue = value[subKey];
+                    html += `<li><strong>${subKey}:</strong> ${formatSingleValue(subValue)}</li>`;
+                });
+                html += '</ul>';
+                return html;
+            } else {
+                return `<p class="mb-0"><strong>Value:</strong> ${formatSingleValue(value)}</p>`;
+            }
+        }
+
+        function formatSingleValue(value) {
+            if (typeof value === 'number') {
+                return value.toFixed(2);
+            } else if (typeof value === 'boolean') {
+                return value ? 
+                    '<span class="badge bg-success">True</span>' : 
+                    '<span class="badge bg-danger">False</span>';
+            } else if (typeof value === 'string') {
+                // Check if it's a timestamp or date
+                if (value.match(/^\d{4}-\d{2}-\d{2}/)) {
+                    return `<span class="text-info">${value}</span>`;
+                }
+                return value;
+            }
+            return String(value);
+        }
+
+        function loadFirebaseData() {
+            const dataDisplay = document.getElementById('dataDisplay');
+            const connectionStatus = document.getElementById('connectionStatus');
+            
+            // Show loading state
+            dataDisplay.innerHTML = `
+                <div class="text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2 text-muted">Loading data from Firebase...</p>
+                </div>
+            `;
+
+            // Read data from Firebase Realtime Database
+            database.ref('/').once('value')
+                .then((snapshot) => {
+                    const data = snapshot.val();
+                    displayFirebaseData(data);
+                    connectionStatus.className = 'badge bg-success';
+                    connectionStatus.innerHTML = '<i class="bi bi-wifi me-1"></i>Connected';
+                })
+                .catch((error) => {
+                    console.error('Error reading data:', error);
+                    dataDisplay.innerHTML = `
+                        <div class="text-center text-danger">
+                            <i class="bi bi-exclamation-triangle display-4"></i>
+                            <p class="mt-2">Error loading data: ${error.message}</p>
+                            <button class="btn btn-outline-danger" onclick="loadFirebaseData()">
+                                <i class="bi bi-arrow-clockwise me-2"></i>Retry
+                            </button>
+                        </div>
+                    `;
+                    connectionStatus.className = 'badge bg-danger';
+                    connectionStatus.innerHTML = '<i class="bi bi-wifi-off me-1"></i>Error';
+                });
+        }
+
+        function clearDataDisplay() {
+            const dataDisplay = document.getElementById('dataDisplay');
+            dataDisplay.innerHTML = `
+                <div class="text-center text-muted">
+                    <i class="bi bi-database display-4"></i>
+                    <p class="mt-2">Click "Refresh Data" to load data from Firebase</p>
+                </div>
+            `;
+        }
+
+        // Event Listeners for Firebase Data
+        document.addEventListener('DOMContentLoaded', function() {
+            const refreshBtn = document.getElementById('refreshBtn');
+            const clearBtn = document.getElementById('clearBtn');
+
+            if (refreshBtn) {
+                refreshBtn.addEventListener('click', loadFirebaseData);
+            }
+
+            if (clearBtn) {
+                clearBtn.addEventListener('click', clearDataDisplay);
+            }
+
+            // Auto-load data when page loads (optional)
+            // loadFirebaseData();
+        });
+
+        // Real-time data listener (optional - uncomment to enable real-time updates)
+        /*
+        database.ref('/').on('value', (snapshot) => {
+            const data = snapshot.val();
+            displayFirebaseData(data);
+        });
+        */
+    </script>
+</body>
+</html>

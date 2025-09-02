@@ -137,6 +137,85 @@
         .bulb {
             position: relative;
         }
+
+        .timer-value-display {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 8px 12px;
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        .timer-value {
+            font-weight: bold;
+            color: #495057;
+            margin-left: 5px;
+        }
+
+        .slider-container {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .slider-value-display {
+            background-color: #007bff;
+            color: white;
+            border-radius: 20px;
+            padding: 8px 16px;
+            display: inline-block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .slider-wrapper {
+            position: relative;
+        }
+
+        .custom-slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #ddd;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+            margin: 15px 0;
+        }
+
+        .custom-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #007bff;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .custom-slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #007bff;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            font-size: 12px;
+            color: #6c757d;
+        }
     </style>
 </head>
 
@@ -172,6 +251,31 @@
                         <span class="slider"></span>
                     </label>
                     <p class="mt-2 mb-0">Toggle to turn Timer ON/OFF</p>
+                </div>
+
+                <!-- Timer Value Display -->
+                <div class="text-center mt-3">
+                    <div class="timer-value-display">
+                        <small class="text-muted">Timer Value:</small>
+                        <span class="timer-value" id="timerValue">Loading...</span>
+                    </div>
+                </div>
+
+                <!-- Slider Component -->
+                <div class="slider-container mt-4">
+                    <div class="text-center mb-3">
+                        <div class="slider-value-display">
+                            <span class="slider-value" id="sliderValue">Loading...</span>
+                        </div>
+                    </div>
+                    <div class="slider-wrapper">
+                        <input type="range" class="form-range custom-slider" id="valueSlider" 
+                               min="1" max="3600" value="500" step="1">
+                        <div class="slider-labels">
+                            <span class="slider-min">1</span>
+                            <span class="slider-max">3600</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Status -->
@@ -225,6 +329,11 @@
         // Get DOM elements for Timer
         const bulbSwitch2 = document.getElementById('bulbSwitch2');
         const timerIndicator = document.getElementById('timerIndicator');
+        const timerValue = document.getElementById('timerValue');
+
+        // Get DOM elements for Slider
+        const valueSlider = document.getElementById('valueSlider');
+        const sliderValue = document.getElementById('sliderValue');
 
         // Update status display for Switch 1
         function updateStatus1(statusType, message) {
@@ -239,6 +348,32 @@
             } else {
                 timerIndicator.className = 'timer-indicator';
             }
+        }
+
+        // Update timer value display
+        function updateTimerValue(value) {
+            if (value !== null && value !== undefined) {
+                timerValue.textContent = value;
+            } else {
+                timerValue.textContent = 'N/A';
+            }
+        }
+
+        // Update slider value display
+        function updateSliderValue(value) {
+            sliderValue.textContent = value;
+        }
+
+        // Update Firebase when slider value changes
+        function updateFirebaseSliderValue(value) {
+            database.ref('/timer-val').set(parseInt(value))
+                .then(() => {
+                    console.log('Slider value updated in Firebase:', value);
+                })
+                .catch((error) => {
+                    console.error('Error updating slider value in Firebase:', error);
+                    // Optionally show error to user
+                });
         }
 
         // Update bulb state for Switch 1
@@ -326,6 +461,27 @@
                 });
         }
 
+        // Load initial timer value from Firebase
+        function loadInitialTimerValue() {
+            database.ref('/timer-val').once('value')
+                .then((snapshot) => {
+                    const timerVal = snapshot.val();
+                    updateTimerValue(timerVal);
+                    // Update slider with timer value
+                    if (timerVal !== null && timerVal !== undefined) {
+                        valueSlider.value = timerVal;
+                        updateSliderValue(timerVal);
+                    } else {
+                        updateSliderValue('N/A');
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error loading timer value:', error);
+                    updateTimerValue('Error');
+                    updateSliderValue('Error');
+                });
+        }
+
         // Update Firebase when switch 1 is toggled
         function updateFirebaseState1(isOn) {
             updateStatus1('loading', '<i class="bi bi-hourglass-split me-2"></i>Updating Firebase...');
@@ -379,15 +535,32 @@
             });
         }
 
+        // Listen for real-time changes from Firebase for Timer Value
+        function setupTimerValueListener() {
+            database.ref('/timer-val').on('value', (snapshot) => {
+                const timerVal = snapshot.val();
+                updateTimerValue(timerVal);
+                // Update slider with timer value
+                if (timerVal !== null && timerVal !== undefined) {
+                    valueSlider.value = timerVal;
+                    updateSliderValue(timerVal);
+                } else {
+                    updateSliderValue('N/A');
+                }
+            });
+        }
+
         // Event listeners
         document.addEventListener('DOMContentLoaded', function () {
             // Load initial state for both switches
             loadInitialState1();
             loadInitialState2();
+            loadInitialTimerValue();
 
             // Setup real-time listeners for both switches
             setupRealtimeListener1();
             setupRealtimeListener2();
+            setupTimerValueListener();
 
             // Handle switch 1 toggle
             bulbSwitch1.addEventListener('change', function () {
@@ -399,6 +572,13 @@
             bulbSwitch2.addEventListener('change', function () {
                 const isOn = this.checked;
                 updateFirebaseState2(isOn);
+            });
+
+            // Handle slider change
+            valueSlider.addEventListener('input', function () {
+                const value = this.value;
+                updateSliderValue(value);
+                updateFirebaseSliderValue(value);
             });
         });
     </script>

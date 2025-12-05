@@ -88,9 +88,16 @@ class _BulbSwitchScreenState extends State<BulbSwitchScreen> {
       final timerVal = timerValSnapshot.snapshot.value;
       
       if (timerVal != null) {
+        double value = (timerVal as num).toDouble();
+        // Validate and clamp value between 1.0 and 3600.0
+        value = value.clamp(1.0, 3600.0);
         setState(() {
-          _timerValue = (timerVal as num).toDouble();
+          _timerValue = value;
         });
+        // Update Firebase if value was clamped
+        if (value != (timerVal as num).toDouble()) {
+          await _timerValDatabase.set(value.toInt());
+        }
       } else {
         await _timerValDatabase.set(500);
         setState(() {
@@ -139,9 +146,16 @@ class _BulbSwitchScreenState extends State<BulbSwitchScreen> {
     _timerValDatabase.onValue.listen((event) {
       final timerVal = event.snapshot.value;
       if (timerVal != null && !_isSliderUserToggling) {
+        double value = (timerVal as num).toDouble();
+        // Validate and clamp value between 1.0 and 3600.0
+        value = value.clamp(1.0, 3600.0);
         setState(() {
-          _timerValue = (timerVal as num).toDouble();
+          _timerValue = value;
         });
+        // Update Firebase if value was clamped
+        if (value != (timerVal as num).toDouble()) {
+          _timerValDatabase.set(value.toInt());
+        }
       }
     });
   }
